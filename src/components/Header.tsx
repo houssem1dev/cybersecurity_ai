@@ -44,7 +44,7 @@ export function Header({
         <div className={`status-pill ${isReady ? '' : 'warning'}`}>
           <span className="pulse-dot" />
           <span>
-            {isReady ? `GROQ READY: ${currentModel.replace('llama-', '').replace('-versatile', '')}` : 'KEY REQUIRED'}
+            {isReady ? `GROQ: ${currentModel.split('/').pop()?.toUpperCase() || currentModel}` : 'KEY REQUIRED'}
           </span>
         </div>
       </div>

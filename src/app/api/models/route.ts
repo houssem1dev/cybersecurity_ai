@@ -81,8 +81,7 @@ function describeModel(id: string): string {
 
 // Curated safe fallback list if Groq API is unavailable
 export const FALLBACK_MODELS = [
-  { id: 'gemma2-9b-it', name: 'Gemma 2 9B (Google)', description: 'Fast inference — rapid code triage & real-time log inspection' },
-  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B (32k ctx)', description: 'Extended 32k context — large codebases & full log dump analysis' },
-  { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1 Distill 70B', description: 'DeepSeek reasoning — complex multi-step security inference' },
-  { id: 'qwen-qwq-32b', name: 'Qwen QwQ 32B', description: 'Alibaba Qwen model — strong code reasoning & analysis' },
+  { id: 'openai/gpt-oss-120b', name: 'OpenAI GPT-OSS 120B', description: 'Flagship open-weights 120B — deep architectural reasoning, built-in code analysis (Recommended)' },
+  { id: 'openai/gpt-oss-20b', name: 'OpenAI GPT-OSS 20B', description: 'Ultra-fast 20B inference — rapid code audits & real-time log triage' },
+  { id: 'qwen/qwen3.8-27b', name: 'Qwen 3.8 27B (Alibaba)', description: 'High-capability 27B model — complex multi-step security analysis & protocol inspection' },
 ];

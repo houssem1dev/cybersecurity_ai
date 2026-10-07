@@ -140,6 +140,30 @@ export function SettingsModal({
                 ))
               )}
             </div>
+
+            {/* Custom Model ID Input */}
+            <div style={{ marginTop: '10px' }}>
+              <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
+                Or enter custom model ID manually:
+              </div>
+              <input
+                type="text"
+                placeholder="e.g. openai/gpt-oss-120b or qwen/qwen3.8-27b"
+                value={currentModel}
+                onChange={(e) => onSelectModel(e.target.value.trim())}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  background: '#04060a',
+                  border: '1px solid var(--border-subtle)',
+                  color: '#00f2fe',
+                  fontSize: '0.8rem',
+                  fontFamily: 'var(--font-mono)',
+                  outline: 'none',
+                }}
+              />
+            </div>
           </div>
 
           {/* API Key Configuration */}

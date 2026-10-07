@@ -16,7 +16,7 @@ export default function Home() {
   const [isStreaming, setIsStreaming] = useState(false);
 
   const [selectedMode, setSelectedMode] = useState<string>('all');
-  const [currentModel, setCurrentModel] = useState<string>('gemma2-9b-it');
+  const [currentModel, setCurrentModel] = useState<string>('openai/gpt-oss-120b');
   const [customApiKey, setCustomApiKey] = useState<string>('');
   const [serverKeyConfigured, setServerKeyConfigured] = useState<boolean>(false);
 
@@ -29,8 +29,22 @@ export default function Home() {
     const savedKey = localStorage.getItem('cyberai_groq_key');
     if (savedKey) setCustomApiKey(savedKey);
 
+    const retiredModels = [
+      'gemma2-9b-it',
+      'llama3-70b-8192',
+      'llama3-8b-8192',
+      'llama-3.3-70b-versatile',
+      'llama-3.1-70b-versatile',
+      'llama-3.1-8b-instant',
+      'mixtral-8x7b-32768',
+    ];
     const savedModel = localStorage.getItem('cyberai_groq_model');
-    if (savedModel) setCurrentModel(savedModel);
+    if (savedModel && !retiredModels.includes(savedModel)) {
+      setCurrentModel(savedModel);
+    } else {
+      setCurrentModel('openai/gpt-oss-120b');
+      localStorage.setItem('cyberai_groq_model', 'openai/gpt-oss-120b');
+    }
 
     // Check server key status
     fetch('/api/health')

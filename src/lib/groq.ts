@@ -31,15 +31,24 @@ export interface ChatMessage {
 
 // Static fallback model list — app dynamically loads live models from /api/models
 export const SUPPORTED_MODELS = [
-  { id: 'gemma2-9b-it', name: 'Gemma 2 9B (Google)', description: 'Fast & capable — rapid triage, code audits, and log inspection (Recommended)' },
-  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B (32k ctx)', description: '32k context window — ideal for large codebases & full log dumps' },
-  { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1 Distill 70B', description: 'Strong multi-step reasoning for complex vulnerability chains' },
-  { id: 'qwen-qwq-32b', name: 'Qwen QwQ 32B', description: 'Alibaba Qwen — powerful code reasoning & structured security analysis' },
+  { id: 'openai/gpt-oss-120b', name: 'OpenAI GPT-OSS 120B', description: 'Flagship open-weights 120B — deep architectural reasoning, built-in code analysis (Recommended)' },
+  { id: 'openai/gpt-oss-20b', name: 'OpenAI GPT-OSS 20B', description: 'Ultra-fast 20B inference — rapid code audits & real-time log triage' },
+  { id: 'qwen/qwen3.8-27b', name: 'Qwen 3.8 27B (Alibaba)', description: 'High-capability 27B model — complex multi-step security analysis & protocol inspection' },
+];
+
+const DECOMMISSIONED_MODELS = [
+  'gemma2-9b-it',
+  'llama3-70b-8192',
+  'llama3-8b-8192',
+  'llama-3.3-70b-versatile',
+  'llama-3.1-70b-versatile',
+  'llama-3.1-8b-instant',
+  'mixtral-8x7b-32768',
 ];
 
 export async function callGroqChat({
   apiKey,
-  model = 'gemma2-9b-it',
+  model = 'openai/gpt-oss-120b',
   messages,
   mode = 'all',
 }: {
@@ -62,25 +71,60 @@ export async function callGroqChat({
     content: DEFENSIVE_SYSTEM_PROMPT + modeAddendum,
   };
 
-  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+  // If requested model is known decommissioned, transparently upgrade to openai/gpt-oss-120b
+  let activeModel = model;
+  if (DECOMMISSIONED_MODELS.includes(activeModel)) {
+    activeModel = 'openai/gpt-oss-120b';
+  }
+
+  const payload = {
+    model: activeModel,
+    messages: [systemMessage, ...messages],
+    temperature: 0.2, // Low temperature for high precision security analysis
+    max_tokens: 4096,
+    stream: true,
+  };
+
+  let response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({
-      model,
-      messages: [systemMessage, ...messages],
-      temperature: 0.2, // Low temperature for high precision security analysis
-      max_tokens: 4096,
-      stream: true,
-    }),
+    body: JSON.stringify(payload),
   });
 
+  // If the model fails because it was decommissioned or not found, try fallback models
   if (!response.ok) {
     const errorBody = await response.text();
+    if (
+      (response.status === 400 && errorBody.includes('decommissioned')) ||
+      (response.status === 404 && errorBody.includes('model_not_found'))
+    ) {
+      const fallbacks = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'].filter(
+        (m) => m !== activeModel
+      );
+
+      for (const fallbackModel of fallbacks) {
+        payload.model = fallbackModel;
+        const retryRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (retryRes.ok) {
+          return retryRes;
+        }
+      }
+    }
+
     throw new Error(`Groq API error (${response.status}): ${errorBody}`);
   }
 
   return response;
 }
+
