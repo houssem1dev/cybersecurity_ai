@@ -16,7 +16,7 @@ export default function Home() {
   const [isStreaming, setIsStreaming] = useState(false);
 
   const [selectedMode, setSelectedMode] = useState<string>('all');
-  const [currentModel, setCurrentModel] = useState<string>('llama-3.3-70b-versatile');
+  const [currentModel, setCurrentModel] = useState<string>('llama3-70b-8192');
   const [customApiKey, setCustomApiKey] = useState<string>('');
   const [serverKeyConfigured, setServerKeyConfigured] = useState<boolean>(false);
 

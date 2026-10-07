@@ -30,14 +30,15 @@ export interface ChatMessage {
 }
 
 export const SUPPORTED_MODELS = [
-  { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B Versatile', description: 'Flagship reasoning & deep vulnerability auditing (Recommended)' },
-  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant', description: 'Ultra-fast inference for rapid triage & log inspection' },
-  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B (32k context)', description: 'High token context for large codebases & log dumps' },
+  { id: 'llama3-70b-8192', name: 'Llama 3 70B (8k ctx)', description: 'Flagship deep reasoning — vulnerability auditing & threat analysis (Recommended)' },
+  { id: 'llama3-8b-8192', name: 'Llama 3 8B Instant', description: 'Ultra-fast inference for rapid triage & log inspection' },
+  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B (32k context)', description: 'High token context for large codebases & full log dumps' },
+  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant', description: 'Next-gen fast model for real-time triage queries' },
 ];
 
 export async function callGroqChat({
   apiKey,
-  model = 'llama-3.3-70b-versatile',
+  model = 'llama3-70b-8192',
   messages,
   mode = 'all',
 }: {
