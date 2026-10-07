@@ -4,7 +4,8 @@ import { callGroqChat, ChatMessage } from '@/lib/groq';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { messages, mode = 'all', model = 'llama3-70b-8192', apiKeyOverride } = body;
+    const { messages, mode = 'all', model = 'gemma2-9b-it', apiKeyOverride } = body;
+
 
     const apiKey = apiKeyOverride || process.env.GROQ_API_KEY;
 

@@ -29,16 +29,17 @@ export interface ChatMessage {
   content: string;
 }
 
+// Static fallback model list — app dynamically loads live models from /api/models
 export const SUPPORTED_MODELS = [
-  { id: 'llama3-70b-8192', name: 'Llama 3 70B (8k ctx)', description: 'Flagship deep reasoning — vulnerability auditing & threat analysis (Recommended)' },
-  { id: 'llama3-8b-8192', name: 'Llama 3 8B Instant', description: 'Ultra-fast inference for rapid triage & log inspection' },
-  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B (32k context)', description: 'High token context for large codebases & full log dumps' },
-  { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B Instant', description: 'Next-gen fast model for real-time triage queries' },
+  { id: 'gemma2-9b-it', name: 'Gemma 2 9B (Google)', description: 'Fast & capable — rapid triage, code audits, and log inspection (Recommended)' },
+  { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B (32k ctx)', description: '32k context window — ideal for large codebases & full log dumps' },
+  { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1 Distill 70B', description: 'Strong multi-step reasoning for complex vulnerability chains' },
+  { id: 'qwen-qwq-32b', name: 'Qwen QwQ 32B', description: 'Alibaba Qwen — powerful code reasoning & structured security analysis' },
 ];
 
 export async function callGroqChat({
   apiKey,
-  model = 'llama3-70b-8192',
+  model = 'gemma2-9b-it',
   messages,
   mode = 'all',
 }: {
