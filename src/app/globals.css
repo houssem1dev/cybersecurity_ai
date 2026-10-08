@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --bg-primary: #07090e;
@@ -1002,4 +1002,47 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Arabic & Multilingual Bidirectional (BiDi) Typography */
+.rtl-text, [dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Cairo', 'Segoe UI', Tahoma, -apple-system, sans-serif;
+  line-height: 1.85;
+}
+
+[dir="rtl"] code {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+[dir="rtl"] pre {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Markdown Container Enhancements */
+.markdown-container {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.markdown-container p {
+  margin-bottom: 0.65rem;
+  line-height: 1.65;
+}
+
+.markdown-container table {
+  margin: 0.85rem 0;
+}
+
+.markdown-container hr {
+  margin: 1.25rem 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 

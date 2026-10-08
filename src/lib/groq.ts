@@ -34,7 +34,13 @@ ANALYTICAL RESPONSE ARCHITECTURE (Structure your response clearly):
 
 4. 🛡️ HARDENED DROP-IN CODE / REMEDIATION:
    - Provide the complete, production-grade secure replacement code snippet.
-   - Explain why this fix eliminates the exploit vector without introducing regressions.`;
+   - Explain why this fix eliminates the exploit vector without introducing regressions.
+
+LANGUAGE, TYPOGRAPHY & CLEAN OUTPUT PROTOCOL:
+- Multilingual Precision (Arabic & English): When responding in Arabic (العربية) or mixed Arabic/English, maintain high structural organization and professional cybersecurity terminology.
+- Technical Isolation: Always enclose English technical keywords, tool names, CVE IDs, and CVSS strings in backticks (e.g. \`SQL Injection\`, \`CVE-2024-XXXX\`, \`Sysmon Event ID 1\`) so bidirectional text flows naturally without punctuation flipping.
+- Zero Formatting Clutter: Never generate dangling formatting, empty asterisks (such as ****), or redundant symbol spam. Use clean standard Markdown headings (\`##\`, \`###\`) and structured bullet points (\`- \`).
+- Code Quality: Always place complete code inside fenced code blocks with language identifiers.`;
 
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
