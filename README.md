@@ -1,105 +1,113 @@
-# 🛡️ CyberAI Architect | Defensive Threat & Vulnerability Advisory
+# 🛡️ CyberAI Mythos | Glasswing Cybersecurity & Autonomous Patching Engine
 
-Enterprise-grade defensive cybersecurity architecture, OWASP assessment, DDoS resilience, and CVSS v3.1 scoring platform powered by **Groq High-Speed Inference** (`llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `mixtral-8x7b-32768`).
+Ultra-advanced cybersecurity vulnerability intelligence, exploit mechanics dissection, and automated code remediation platform inspired by **Claude Mythos (Project Glasswing)** and powered by **Groq High-Speed Inference** (`openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `qwen/qwen3.8-27b`).
 
-Built with **Next.js 16 (App Router)** and **Vanilla CSS Design System**, optimized for 1-click deployment on **Vercel**.
+Built with **Next.js 16 (App Router)** and **Tactical Cyber HUD Vanilla CSS Design System**, optimized for 1-click deployment on **Vercel**.
 
 ---
 
-## ⚡ Core Operational Modes
+## ⚡ Mythos Intelligence Directives
 
-| Mode | Domain | Primary Focus |
+| Directive | Focus Domain | Primary Capabilities |
 | :--- | :--- | :--- |
-| **Mode 1** | **OWASP Web Application Security** | Broken Access Control, SQLi, Command Injection, SSRF, XSS, Cryptographic Failures, and precise code/configuration patch synthesis. |
-| **Mode 2** | **DDoS & Network Attack Resilience** | L3/L4 volumetric floods (UDP/ICMP), protocol attacks (SYN floods), Layer 7 HTTP floods/Slowloris, Anycast CDN posture, scrubbing centers, and NGINX/iptables rate-limiting. |
-| **Mode 3** | **Vulnerability Scoring & Risk Matrix** | Quantitative scoring (CVSS v3.1/v4.0 vector strings), CIA triad impact analysis (Confidentiality, Integrity, Availability), and MITRE ATT&CK TTP mapping. |
-
----
-
-## 🏗️ 4-Stage Defensive Response Framework
-
-Every security audit adheres strictly to the four-part analytical response framework:
-1. **Executive Summary:** High-level posture, asset exposure, and critical business risk.
-2. **Technical Breakdown:** Step-by-step analysis of the vulnerability mechanics, protocol flaw, or attack vector.
-3. **Risk Scoring & Impact:** Explicit CVSS v3.1 base score, vector string, and CIA impact evaluation.
-4. **Remediation & Hardening Roadmap:** Actionable mitigation steps, defensive configurations (WAF, NGINX, iptables), and code-level patches.
+| **Mythos Exploit Mechanics** | **Zero-Day & Exploit Paths** | AST parsing discrepancies, memory safety boundaries (UAF, OOB, heap corruption), ROP/JOP gadget chains, and execution flow hijacking. |
+| **Autonomous Code Remediation** | **Auto-Fix & Patch Synthesis** | Scans vulnerable files and synthesizes 100% production-ready, zero-placeholder drop-in code patches with cryptographic verification. |
+| **Forensic Footprint & Radar** | **Telemetry & Detection Eng.** | Sysmon Event IDs (1, 8, 10), Linux eBPF/auditd, memory page artifacts, ETW events, and detection engineering against stealth evasion. |
+| **Zero-Trust & Infra Shield** | **Cloud & Network Defense** | L3/L4/L7 DDoS resilience, API Gateway rate-limiting, WAF rule generation, and cloud IAM boundary enforcement. |
 
 ---
 
 ## 🚀 Key Features
 
-- **⚡ Real-time Groq Streaming:** Ultra-low latency responses using Groq's LPUs.
-- **🎛️ Interactive CVSS v3.1 Calculator:** Real-time visual score dial, vector string generator, and 1-click injection into your audit session.
-- **📁 One-Click Audit Scenarios:** Pre-loaded real-world scenarios (Node.js SQLi/Auth, NGINX Slowloris DDoS, Cloud SSRF IMDSv1, Kubernetes Zero-Trust).
-- **📋 Export Security Reports:** Download audit findings as clean Markdown reports (.md) with timestamps and CVSS scores.
-- **🔒 Enterprise Security Aesthetic:** High-contrast tactical dark theme with glowing cyan/emerald status telemetry and responsive layout.
-- **🔑 Dual API Key Management:** Seamlessly reads `GROQ_API_KEY` from server-side Vercel environment variables or allows client-side override in Settings.
+- **⚡ Claude Mythos Reasoning Engine:** Deep, multi-stage vulnerability analysis modeling Project Glasswing's zero-day and exploit path logic.
+- **🛠️ Auto-Patch Studio:** Dedicated studio view to paste code from your projects and receive instantaneous drop-in hardened code with zero placeholders.
+- **🔑 Project API Key & Integration Hub:** Generate project keys (`cai_live_...`) to connect external apps, CI/CD pipelines, or microservices directly to CyberAI.
+- **🌐 REST Endpoint `/api/v1/audit`:** External REST API for programmatic code scanning and patch retrieval via cURL, Node.js, Python, or GitHub Actions.
+- **🎛️ Interactive CVSS v3.1 Matrix:** Visual dial calculator, vector string generator, and 1-click prompt injection.
+- **📋 Export Tactical Reports:** 1-click export of structured security audits to Markdown (`.md`).
+- **🪟 Tactical Glass HUD:** Cyberpunk dark mode with glowing cyan/emerald telemetry beacons and responsive controls.
+
+---
+
+## 🔌 Link Your Projects via REST API
+
+You can connect external applications to automatically scan and correct vulnerabilities:
+
+### 1. Terminal / cURL
+```bash
+curl -X POST "http://localhost:3000/api/v1/audit" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer cai_live_YOUR_PROJECT_KEY" \
+  -d '{
+    "code": "const q = \"SELECT * FROM users WHERE id=\" + req.query.id; db.query(q);",
+    "language": "javascript",
+    "mode": "autofix"
+  }'
+```
+
+### 2. Node.js / Express
+```javascript
+const res = await fetch('http://localhost:3000/api/v1/audit', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer cai_live_YOUR_PROJECT_KEY'
+  },
+  body: JSON.stringify({
+    code: sourceCode,
+    language: 'typescript',
+    mode: 'autofix'
+  })
+});
+
+const { auditReport, patchedCode } = await res.json();
+console.log('Patched Code:\n', patchedCode);
+```
+
+### 3. Python
+```python
+import requests
+
+res = requests.post(
+    "http://localhost:3000/api/v1/audit",
+    headers={"Authorization": "Bearer cai_live_YOUR_PROJECT_KEY"},
+    json={
+        "code": open("app/auth.py").read(),
+        "language": "python",
+        "mode": "autofix"
+    }
+)
+data = res.json()
+print("Secure Patch:\n", data.get("patchedCode"))
+```
 
 ---
 
 ## 📦 Local Development
 
-1. **Clone the repository and install dependencies:**
-   \`\`\`bash
-   git clone <your-repo-url>
-   cd cyberai
+1. **Clone repository and install dependencies:**
+   ```bash
    npm install
-   \`\`\`
+   ```
 
 2. **Configure your Groq API key:**
    Create a `.env.local` file:
-   \`\`\`bash
+   ```bash
    GROQ_API_KEY=gsk_your_groq_api_key_here
-   \`\`\`
-   *(Get your free API key at [console.groq.com/keys](https://console.groq.com/keys))*
+   ```
+   *(Obtain a free key at [console.groq.com/keys](https://console.groq.com/keys))*
 
-3. **Start the development server:**
-   \`\`\`bash
+3. **Start development server:**
+   ```bash
    npm run dev
-   \`\`\`
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+   ```
+   Navigate to [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🌐 Deploy to Vercel in 3 Steps
+## 🌐 Deploy to Vercel
 
-### Step 1: Push to GitHub
-If you haven't pushed your code to GitHub yet:
-\`\`\`bash
-git init
-git add .
-git commit -m "feat: initial commit of CyberAI platform"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/cyberai.git
-git push -u origin main
-\`\`\`
-
-### Step 2: Import into Vercel
-1. Go to [vercel.com](https://vercel.com) and log in.
-2. Click **"Add New..."** &rarr; **"Project"**.
-3. Select your **`cyberai`** GitHub repository.
-
-### Step 3: Add Environment Variable
-In the Vercel project configuration screen:
-1. Open the **Environment Variables** section.
-2. Add:
-   - **Key:** `GROQ_API_KEY`
-   - **Value:** `gsk_...` (Your Groq API key)
-3. Click **Deploy**.
-
-Your CyberAI platform is now live and globally distributed on Vercel's edge network!
-
----
-
-## 🛠️ Tech Stack
-
-- **Framework:** Next.js 16 (App Router)
-- **Runtime:** React 19, TypeScript
-- **Styling:** Custom Vanilla CSS Design System (Zero Tailwind bloat)
-- **AI Engine:** Groq Cloud API (`llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `mixtral-8x7b-32768`)
-- **Icons:** Lucide React
-
----
-
-## 📜 License
-MIT License. Built for defensive security teams, penetration testers, and security architects.
+1. Push your repository to GitHub.
+2. Import repository into [Vercel](https://vercel.com).
+3. Set Environment Variable: `GROQ_API_KEY` = your Groq API key.
+4. Click **Deploy**.

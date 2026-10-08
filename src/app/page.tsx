@@ -6,6 +6,8 @@ import { Sidebar } from '@/components/Sidebar';
 import { ChatArea } from '@/components/ChatArea';
 import { CvssModal } from '@/components/CvssModal';
 import { SettingsModal } from '@/components/SettingsModal';
+import { ApiHubModal } from '@/components/ApiHubModal';
+import { CodePatchStudio } from '@/components/CodePatchStudio';
 import { ChatMessage } from '@/lib/groq';
 import { SecurityScenario } from '@/lib/templates';
 
@@ -15,17 +17,18 @@ export default function Home() {
   const [streamingText, setStreamingText] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
 
-  const [selectedMode, setSelectedMode] = useState<string>('all');
+  const [activeView, setActiveView] = useState<'chat' | 'patcher'>('chat');
+  const [selectedMode, setSelectedMode] = useState<string>('mythos');
   const [currentModel, setCurrentModel] = useState<string>('openai/gpt-oss-120b');
   const [customApiKey, setCustomApiKey] = useState<string>('');
   const [serverKeyConfigured, setServerKeyConfigured] = useState<boolean>(false);
 
   const [isCvssOpen, setIsCvssOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isApiHubOpen, setIsApiHubOpen] = useState(false);
 
   // Check health and load saved settings on mount
   useEffect(() => {
-    // Check local storage for custom key and model preference
     const savedKey = localStorage.getItem('cyberai_groq_key');
     if (savedKey) setCustomApiKey(savedKey);
 
@@ -138,25 +141,27 @@ export default function Home() {
   const handleSelectScenario = (scenario: SecurityScenario) => {
     setSelectedMode(scenario.mode);
     setInputText(scenario.prompt);
+    setActiveView('chat');
   };
 
   const handleInsertCvssVector = (vector: string, score: number, severity: string) => {
     const cvssSnippet = `\n\n**CVSS v3.1 Metric String:** \`${vector}\`\n**Base Score:** ${score} (${severity})\nPlease evaluate this metric string in your risk analysis.`;
     setInputText((prev) => (prev ? prev + cvssSnippet : cvssSnippet.trim()));
+    setActiveView('chat');
   };
 
   const handleExportReport = () => {
     if (messages.length === 0) return;
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    let reportContent = `# CYBERAI DEFENSIVE SECURITY ASSESSMENT REPORT\n`;
+    let reportContent = `# CYBERAI MYTHOS SECURITY ASSESSMENT REPORT\n`;
     reportContent += `Generated: ${new Date().toUTCString()}\n`;
-    reportContent += `Operational Mode: ${selectedMode.toUpperCase()}\n`;
+    reportContent += `Operational Directive: ${selectedMode.toUpperCase()}\n`;
     reportContent += `Model Engine: ${currentModel}\n\n`;
     reportContent += `---\n\n`;
 
-    messages.forEach((msg, idx) => {
-      reportContent += `## ${msg.role === 'user' ? 'Target Input / Telemetry' : 'Defensive Assessment & Remediation'}\n\n`;
+    messages.forEach((msg) => {
+      reportContent += `## ${msg.role === 'user' ? 'Target Input / Telemetry' : 'Mythos Assessment & Hardening'}\n\n`;
       reportContent += `${msg.content}\n\n`;
       reportContent += `---\n\n`;
     });
@@ -165,7 +170,7 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `Security-Assessment-Report-${timestamp}.md`);
+    link.setAttribute('download', `CyberAI-Mythos-Report-${timestamp}.md`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -178,10 +183,13 @@ export default function Home() {
         hasCustomKey={Boolean(customApiKey)}
         onOpenCvss={() => setIsCvssOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenApiHub={() => setIsApiHubOpen(true)}
         onClearChat={handleClearChat}
         onExportReport={handleExportReport}
         canExport={messages.length > 0}
         currentModel={currentModel}
+        activeView={activeView}
+        onSelectView={setActiveView}
       />
 
       <div className="main-content">
@@ -189,21 +197,34 @@ export default function Home() {
           selectedMode={selectedMode}
           onSelectMode={setSelectedMode}
           onSelectScenario={handleSelectScenario}
+          onOpenApiHub={() => setIsApiHubOpen(true)}
         />
 
-        <ChatArea
-          messages={messages}
-          streamingText={streamingText}
-          isStreaming={isStreaming}
-          inputText={inputText}
-          onInputChange={setInputText}
-          onSendMessage={() => handleSendMessage()}
-          selectedMode={selectedMode}
-          onOpenCvss={() => setIsCvssOpen(true)}
-          onSelectPrompt={(prompt) => {
-            setInputText(prompt);
-          }}
-        />
+        {activeView === 'chat' ? (
+          <ChatArea
+            messages={messages}
+            streamingText={streamingText}
+            isStreaming={isStreaming}
+            inputText={inputText}
+            onInputChange={setInputText}
+            onSendMessage={() => handleSendMessage()}
+            selectedMode={selectedMode}
+            onOpenCvss={() => setIsCvssOpen(true)}
+            onSelectPrompt={(prompt) => {
+              setInputText(prompt);
+            }}
+            onOpenApiHub={() => setIsApiHubOpen(true)}
+          />
+        ) : (
+          <CodePatchStudio
+            customApiKey={customApiKey}
+            serverKeyConfigured={serverKeyConfigured}
+            onSendToChat={(code) => {
+              setInputText(`Audit and deconstruct this code snippet:\n\`\`\`\n${code}\n\`\`\``);
+              setActiveView('chat');
+            }}
+          />
+        )}
       </div>
 
       <CvssModal
@@ -220,6 +241,13 @@ export default function Home() {
         onSelectModel={handleSelectModel}
         customApiKey={customApiKey}
         onSaveCustomKey={handleSaveCustomKey}
+      />
+
+      <ApiHubModal
+        isOpen={isApiHubOpen}
+        onClose={() => setIsApiHubOpen(false)}
+        serverKeyConfigured={serverKeyConfigured}
+        customApiKey={customApiKey}
       />
     </div>
   );

@@ -857,3 +857,149 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+/* Tactical Input Tray HUD */
+.chat-input-area {
+  padding: 1rem 1.5rem 1.25rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.input-hud-bar {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.active-directive-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.hud-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.quick-snippets {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.snippet-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-mono);
+}
+
+.snippet-pill:hover {
+  background: rgba(0, 242, 254, 0.12);
+  border-color: rgba(0, 242, 254, 0.4);
+  color: #fff;
+}
+
+.input-box-wrapper {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 3.5rem 0.75rem 0.9rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.2s ease;
+}
+
+.input-box-wrapper:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+}
+
+.chat-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: #fff;
+  line-height: 1.5;
+  min-height: 60px;
+  max-height: 200px;
+}
+
+.chat-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.send-button {
+  position: absolute;
+  right: 10px;
+  bottom: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: not-allowed;
+  transition: all 0.2s ease;
+}
+
+.send-button.active {
+  background: linear-gradient(135deg, var(--accent-cyan), #00a8ff);
+  color: #07090e;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+.send-button.active:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 22px rgba(0, 242, 254, 0.6);
+}
+
+.api-hub-banner-hover:hover {
+  border-color: rgba(0, 242, 254, 0.6) !important;
+  background: rgba(0, 242, 254, 0.12) !important;
+  transform: translateY(-1px);
+}
+
+.spin-animation {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+

@@ -1,87 +1,117 @@
-// Pre-configured Defensive Security Audit Templates
+// Pre-configured CyberAI Mythos Intelligence & Security Audit Templates
 
 export interface SecurityScenario {
   id: string;
   title: string;
-  category: 'web' | 'ddos' | 'scoring' | 'arch';
-  mode: 'mode1' | 'mode2' | 'mode3' | 'all';
+  category: 'mythos' | 'autofix' | 'forensics' | 'defense';
+  mode: 'mythos' | 'autofix' | 'forensics' | 'defense' | 'all';
   badge: string;
   prompt: string;
 }
 
 export const SECURITY_SCENARIOS: SecurityScenario[] = [
   {
-    id: 'owasp-sqli-auth',
-    title: 'OWASP: SQLi & Broken Auth in Node.js',
-    category: 'web',
-    mode: 'mode1',
-    badge: 'Mode 1: Web Security',
-    prompt: `Please perform a Mode 1 (OWASP Web App Security) vulnerability assessment on this Node.js/Express authentication snippet:
+    id: 'mythos-rce-gadget',
+    title: 'Mythos: Object Injection & RCE Gadget Chain',
+    category: 'mythos',
+    mode: 'mythos',
+    badge: 'Mythos Exploit Mechanics',
+    prompt: `Analyze this Node.js deserialization controller using Claude Mythos exploit mechanics:
 
 \`\`\`javascript
-app.post('/api/v1/auth/login', async (req, res) => {
-  const { username, password } = req.body;
-  // Raw concatenation query
-  const query = \`SELECT id, role, secret_token, password_hash FROM users WHERE username = '\${username}'\`;
-  const result = await db.raw(query);
+const serialize = require('node-serialize');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const app = express();
+app.use(cookieParser());
 
-  if (!result || result.length === 0) {
-    return res.status(401).json({ error: "Invalid credentials" });
+app.get('/dashboard', (req, res) => {
+  if (req.cookies.session_state) {
+    try {
+      const decoded = Buffer.from(req.cookies.session_state, 'base64').toString();
+      // Deserializing untrusted cookie data
+      const session = serialize.unserialize(decoded);
+      return res.render('dashboard', { user: session.username });
+    } catch (err) {
+      return res.status(500).send("Session error");
+    }
   }
-
-  const user = result[0];
-  // Plaintext compare fallback
-  if (user.password_hash === password) {
-    req.session.userId = user.id;
-    req.session.role = user.role;
-    return res.json({ token: user.secret_token, role: user.role });
-  }
-  return res.status(401).json({ error: "Invalid credentials" });
+  res.redirect('/login');
 });
 \`\`\`
 
-Provide the complete 4-stage response: Executive Summary, Technical Breakdown, Risk Scoring (CVSS v3.1), and Remediation & Hardening Roadmap.`,
+Conduct an in-depth Mythos analysis:
+1. Dissect the AST / Object Injection root-cause mechanics (IIFE execution during deserialization).
+2. Trace the gadget chain and exploit prerequisites.
+3. Detail what memory and EDR telemetry flags this attack.
+4. Provide the 100% hardened, production-ready drop-in code fix using cryptographic signing and schema validation.`,
   },
   {
-    id: 'ddos-slowloris-nginx',
-    title: 'DDoS: Slowloris & HTTP Flood Telemetry',
-    category: 'ddos',
-    mode: 'mode2',
-    badge: 'Mode 2: DDoS Resilience',
-    prompt: `Please evaluate this NGINX ingress reverse-proxy configuration and Layer 7 telemetry under high connection saturation:
+    id: 'autofix-auth-sqli',
+    title: 'Auto-Fix: Broken Auth & SQL Injection in Express',
+    category: 'autofix',
+    mode: 'autofix',
+    badge: 'Autonomous Code Patch',
+    prompt: `Analyze this vulnerable user login & password reset service and generate a drop-in secure replacement:
 
-**Incident Telemetry:**
-- Inbound concurrent TCP connections spiked to 65,000 across 400 source IPs.
-- Worker connections in NGINX exhausted (\`768 worker_connections are not enough\`).
-- TTFB (Time to First Byte) increased from 42ms to 28,000ms.
-- Clients sending partial HTTP headers at 1 byte every 12 seconds with no CRLF termination.
+\`\`\`typescript
+import { Request, Response } from 'express';
+import db from '../database';
 
-**Current NGINX Config:**
-\`\`\`nginx
-server {
-    listen 80;
-    server_name api.defense.internal;
+export async function loginHandler(req: Request, res: Response) {
+  const { username, password } = req.body;
+  // Raw string interpolation query
+  const query = \`SELECT id, username, password_hash, role, secret_key FROM accounts WHERE username = '\${username}'\`;
+  const [user] = await db.raw(query);
 
-    location / {
-        proxy_pass http://backend_pool;
-        proxy_read_timeout 300;
-        proxy_send_timeout 300;
-        client_body_timeout 120s;
-        client_header_timeout 120s;
-        keepalive_timeout 75s;
-    }
+  if (!user) {
+    return res.status(401).json({ error: 'User not found' });
+  }
+
+  // Plaintext comparison fallback
+  if (user.password_hash === password) {
+    return res.json({ token: user.secret_key, role: user.role });
+  }
+
+  return res.status(401).json({ error: 'Incorrect credentials' });
 }
 \`\`\`
 
-Evaluate this under Mode 2 (DDoS & Network Attack Analysis). Provide rate-limiting architecture, connection timeouts, iptables/eBPF mitigations, and Anycast CDN posture.`,
+Execute autonomous remediation:
+1. Identify all flaws (SQLi, plaintext auth, timing attack, information leakage).
+2. Calculate CVSS v3.1 base score.
+3. Synthesize the complete, hardened drop-in production TypeScript code using parameterized queries, argon2/bcrypt hashing, constant-time compare, and signed JWTs.`,
   },
   {
-    id: 'cloud-ssrf-imds',
-    title: 'Cloud SSRF & AWS IMDSv1 Audit',
-    category: 'web',
-    mode: 'mode1',
-    badge: 'Mode 1: SSRF Audit',
-    prompt: `Perform a defensive security assessment on this Python FastAPI webhook validator endpoint:
+    id: 'forensics-memory-hollowing',
+    title: 'Forensics: Process Hollowing & Sysmon Telemetry',
+    category: 'forensics',
+    mode: 'forensics',
+    badge: 'Forensic Footprint',
+    prompt: `Analyze the forensic footprint and detection telemetry for a process hollowing / in-memory execution sequence:
+
+**Incident Artifacts:**
+- Target process: \`C:\\Windows\\System32\\svchost.exe\`
+- Telemetry observed:
+  * Sysmon Event ID 1 (Process Create) launched svchost.exe with \`CREATE_SUSPENDED\` flag.
+  * Sysmon Event ID 10 (ProcessAccess) with \`GrantedAccess = 0x1F0FFF\` (PROCESS_ALL_ACCESS).
+  * VirtualAllocEx executed with \`PAGE_EXECUTE_READWRITE\` (0x40).
+  * WriteProcessMemory targeting the main executable image base.
+  * SetThreadContext pointing EIP/RIP to unbacked memory region.
+  * ResumeThread invoked.
+
+Please provide:
+1. Step-by-step mechanical breakdown of how this evasion technique circumvents traditional on-disk AV.
+2. Kernel and memory forensic artifacts left in Volatility / EDR dumps (Vad root, hollowed PE headers).
+3. Exact Sysmon and YARA/Sigma rules to detect and alert on this in SIEM pipelines.`,
+  },
+  {
+    id: 'defense-cloud-ssrf',
+    title: 'Cloud Defense: SSRF & AWS IMDSv2 Shield',
+    category: 'defense',
+    mode: 'defense',
+    badge: 'Zero-Trust Shield',
+    prompt: `Audit and harden this Python FastAPI external webhook proxy against Server-Side Request Forgery (SSRF) and AWS Cloud IMDSv1 metadata exfiltration:
 
 \`\`\`python
 import requests
@@ -89,36 +119,19 @@ from fastapi import FastAPI, HTTPException, Query
 
 app = FastAPI()
 
-@app.get("/api/proxy/fetch-preview")
-def fetch_preview(target_url: str = Query(...)):
+@app.get("/api/proxy/fetch")
+def fetch_external_url(url: str = Query(...)):
     try:
-        # Fetch target url provided by user
-        resp = requests.get(target_url, timeout=5, allow_redirects=True)
-        return {"status": resp.status_code, "content": resp.text[:1000]}
+        # Blindly fetching client-supplied URL
+        resp = requests.get(url, timeout=5, allow_redirects=True)
+        return {"status": resp.status_code, "body": resp.text[:2000]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 \`\`\`
 
-Environment:
-- Container runs in AWS ECS Fargate with an IAM task role attached.
-- Target metadata service at 169.254.169.254 is reachable within the VPC subnet.
-
-Provide Executive Summary, Technical Breakdown, CVSS v3.1 score, and robust code & AWS IMDSv2 hardening recommendations.`,
-  },
-  {
-    id: 'zero-trust-k8s',
-    title: 'Zero-Trust Network & Egress Topology',
-    category: 'arch',
-    mode: 'mode3',
-    badge: 'Mode 3: Risk Scoring',
-    prompt: `Analyze the following Kubernetes microservice network topology and calculate the CVSS v3.1 risk exposure under Mode 3:
-
-**Architecture Overview:**
-- Single Kubernetes namespace \`production\` hosting frontend web pods, payment gateway microservice, and customer database.
-- Flat pod-to-pod networking (Flannel CNI) with no NetworkPolicies deployed.
-- Payment pod holds PCI-DSS tokenization keys in memory.
-- Default egress allows unrestricted outbound 0.0.0.0/0 on any TCP/UDP port.
-
-Evaluate the lateral movement exposure, exfiltration risk, calculate the CVSS score, and provide the Zero-Trust Network Access (ZTNA) NetworkPolicy remediation matrix.`,
+Provide:
+1. Root-cause SSRF analysis (AWS 169.254.169.254, DNS rebinding, internal RFC1918 pivoting).
+2. Complete hardened Python code implementing IP validation, private CIDR blocking, DNS rebinding protection, and disabling HTTP redirects.
+3. AWS IAM & IMDSv2 defensive configuration requirements.`,
   },
 ];

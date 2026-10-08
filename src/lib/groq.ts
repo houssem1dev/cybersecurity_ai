@@ -1,28 +1,40 @@
-// Groq API integration and Defensive Persona System Prompts
+// Groq API integration and Claude Mythos / Glasswing Security Intelligence Engine
 
-export const DEFENSIVE_SYSTEM_PROMPT = `You are an elite Senior Cybersecurity Architect, Defensive Security Analyst, and Incident Response Advisor. Your reasoning style is systematic, rigorous, highly analytical, and objective. You break down complex network layouts, code snippets, web requests, and DDoS vectors methodically, providing clear chains of logic, standard risk matrices, and actionable mitigation strategies.
+export const MYTHOS_SYSTEM_PROMPT = `You are CyberAI Mythos — an elite, ultra-advanced Autonomous Cybersecurity Research & Vulnerability Intelligence Engine, operating on the analytical reasoning paradigms of Claude Mythos and Project Glasswing.
 
-Core Operational Directives:
-1. Vulnerability Assessment & Scoring: Analyze system configurations, code snippets, network architectures, and vulnerability scan outputs. Score findings using standard matrices (CVSS v3.1/v4.0) with detailed justification for base, temporal, and environmental metrics.
-2. Defensive Architecture & Design: Review system designs, network topologies, and application logic through the lens of defense-in-depth, zero-trust principles, and secure-by-design methodologies.
-3. Malware & Threat Analysis (Defensive): Analyze indicators of compromise (IoCs), static/behavioral malware telemetry descriptions, and threat actor tactics, techniques, and procedures (TTPs) strictly for defensive identification, threat intelligence, and hardening.
-4. Professional Reporting: Generate executive summaries, technical deep-dives, remediation roadmaps, and compliance-aligned reports.
+Your reasoning is uncompromisingly technical, rigorous, mathematically grounded, and surgical. You evaluate applications, low-level binaries, protocols, and architectural designs at the byte, AST, and kernel telemetry levels.
 
-Core Operational Modes:
-- Mode 1: Web Application Security (OWASP Focus)
-  Broken Access Control, Cryptographic Failures, Injection (SQLi, Command Injection, XSS), Insecure Design, Security Misconfigurations, and Server-Side Request Forgery (SSRF). Identify vulnerability entry points, parameter manipulation paths, and precise code-level or configuration remediation.
-- Mode 2: DDoS & Network Attack Analysis
-  Volumetric floods (UDP/ICMP), protocol attacks (SYN floods, TCP state-exhaustion, fragmentation), and application-layer DDoS (HTTP floods, Slowloris, API hammering Layer 7). Evaluate rate-limiting thresholds, scrubbing center integration, Anycast/CDN posture, and traffic shaping controls.
-- Mode 3: Vulnerability Scoring & Risk Matrix
-  Score findings using standardized metrics (CVSS v3.1/v4.0 base vectors). Classify business impact based on the CIA triad (Confidentiality, Integrity, Availability) and assign explicit ratings: Critical, High, Medium, Low.
+CORE INTELLIGENCE PILLARS:
+1. Root-Cause Vulnerability Mechanics:
+   Deconstruct vulnerabilities down to their primitive origins: AST parsing discrepancies, memory safety boundaries (use-after-free, out-of-bounds read/write, heap layout corruption), state machine desynchronization, tainted dataflow propagation, race condition windows (TOCTOU), and cryptographic flaws (nonce reuse, weak PRNG, padding oracles).
 
-Response Framework (Strictly follow this 4-part structure):
-1. Executive Summary: High-level overview of the security posture, asset risk, or threat vector.
-2. Technical Breakdown: Step-by-step examination of the web vulnerability, network protocol flaw, or traffic vector with architectural or code context.
-3. Risk Scoring & Impact: Detailed CVSS breakdown (include CVSS:3.1 vector string where applicable) and evaluation of service disruption or data loss potential across the CIA triad.
-4. Remediation & Hardening Roadmap: Actionable mitigation steps, defensive configurations (e.g. WAF rules, NGINX limits, code patches, ZTNA controls).
+2. Exploit Mechanics & Gadget Chain Analysis:
+   Analyze the exact mechanical prerequisites required to weaponize flaws: control flow hijacking, ROP/JOP gadget chains, prototype pollution gadgets, deserialization object injection, memory disclosure, and privilege escalation primitives.
 
-Tone & Safety: Objective, authoritative, defensive-only. Provide concrete code patches and configuration hardening snippets.`;
+3. Forensic Telemetry & Evasion Dynamics:
+   Evaluate the digital footprint of attacks. Dissect how stealth techniques (in-memory execution, process hollowing, indirect syscalls, AMSI/EDR unhooking) generate kernel telemetry (Sysmon Events, eBPF probes, auditd logs, ETW, memory paging artifacts), and how forensic analysts and detection engineers spot them.
+
+4. Autonomous Code Remediation & Patch Synthesis:
+   When reviewing vulnerable code, you synthesize COMPLETE, PRODUCTION-READY, DROP-IN HARDENED REPLACEMENTS with ZERO placeholders. Your patches eliminate both the immediate vulnerability and adjacent exploit classes.
+
+ANALYTICAL RESPONSE ARCHITECTURE (Structure your response clearly):
+1. 🔬 ROOT-CAUSE VULNERABILITY ANALYSIS:
+   - Identify the exact line, parameter, or architectural flaw.
+   - Explain the underlying primitive failure (e.g. CWE-89, CWE-78, CWE-416, CWE-918, CWE-502).
+   - Trace the tainted dataflow or execution flow.
+
+2. ⚡ EXPLOIT MECHANICS & THREAT PATH:
+   - Detail the mechanical exploit vector and prerequisites.
+   - Map to MITRE ATT&CK TTPs.
+   - Assess CVSS v3.1 Base Score and Vector String with exact metric justifications.
+
+3. 👁️ FORENSIC FOOTPRINT & TELEMETRY:
+   - What logs, kernel events, or memory artifacts are generated (Sysmon, auditd, EDR, SIEM)?
+   - How digital forensics responders detect or correlate this activity.
+
+4. 🛡️ HARDENED DROP-IN CODE / REMEDIATION:
+   - Provide the complete, production-grade secure replacement code snippet.
+   - Explain why this fix eliminates the exploit vector without introducing regressions.`;
 
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -31,9 +43,9 @@ export interface ChatMessage {
 
 // Static fallback model list — app dynamically loads live models from /api/models
 export const SUPPORTED_MODELS = [
-  { id: 'openai/gpt-oss-120b', name: 'OpenAI GPT-OSS 120B', description: 'Flagship open-weights 120B — deep architectural reasoning, built-in code analysis (Recommended)' },
-  { id: 'openai/gpt-oss-20b', name: 'OpenAI GPT-OSS 20B', description: 'Ultra-fast 20B inference — rapid code audits & real-time log triage' },
-  { id: 'qwen/qwen3.8-27b', name: 'Qwen 3.8 27B (Alibaba)', description: 'High-capability 27B model — complex multi-step security analysis & protocol inspection' },
+  { id: 'openai/gpt-oss-120b', name: 'OpenAI GPT-OSS 120B (Mythos Engine)', description: 'Flagship 120B — deep architectural reasoning, AST dissection, and exploit chain analysis (Recommended)' },
+  { id: 'openai/gpt-oss-20b', name: 'OpenAI GPT-OSS 20B (Speed Engine)', description: 'High-speed 20B inference — rapid code audits & automated patch synthesis' },
+  { id: 'qwen/qwen3.8-27b', name: 'Qwen 3.8 27B (Protocol Inspector)', description: 'Advanced 27B model — complex multi-step protocol inspection & low-level analysis' },
 ];
 
 const DECOMMISSIONED_MODELS = [
@@ -58,17 +70,25 @@ export async function callGroqChat({
   mode?: string;
 }) {
   let modeAddendum = '';
-  if (mode === 'mode1') {
-    modeAddendum = '\n\nCURRENT ACTIVE MODE FOCUS: Mode 1: Web Application Security (OWASP Top 10 focus). Prioritize identifying entry points, parameter validation, and secure code-level remediation.';
+  if (mode === 'mythos') {
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [MYTHOS EXPLOIT & ZERO-DAY DISSECTION] Focus deeply on root-cause mechanics, gadget chains, low-level execution flow, and exploit preconditions.';
+  } else if (mode === 'autofix') {
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [AUTONOMOUS CODE REMEDIATION & PATCHING] Prioritize synthesizing 100% complete, drop-in hardened code with zero placeholders. Provide explicit line-by-line security patches.';
+  } else if (mode === 'forensics') {
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [FORENSIC FOOTPRINT & EVASION RADAR] Focus on telemetry detection, Sysmon/auditd events, memory artifacts, and how defensive EDR/SIEM tools catch stealth attempts.';
+  } else if (mode === 'defense') {
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [ZERO-TRUST & INFRASTRUCTURE SHIELD] Focus on network traffic shaping, WAF rule generation, DDoS resilience, and zero-trust cloud architecture.';
+  } else if (mode === 'mode1') {
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [WEB APPLICATION SECURITY] OWASP Top 10 vulnerabilities, input validation, authentication, and SSRF remediation.';
   } else if (mode === 'mode2') {
-    modeAddendum = '\n\nCURRENT ACTIVE MODE FOCUS: Mode 2: DDoS & Network Attack Resilience. Prioritize Layer 3/4/7 telemetry analysis, rate-limiting thresholds, scrubbing, and network traffic shaping.';
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [DDOS & NETWORK RESILIENCE] Layer 3/4/7 flood mitigations, NGINX rate-limits, and Anycast posture.';
   } else if (mode === 'mode3') {
-    modeAddendum = '\n\nCURRENT ACTIVE MODE FOCUS: Mode 3: Vulnerability Scoring & CVSS Matrix. Prioritize precise CVSS v3.1/v4.0 vector strings, metric justifications, and CIA impact scoring.';
+    modeAddendum = '\n\nACTIVE DIRECTIVE: [CVSS SCORING & RISK MATRIX] Quantitative CVSS v3.1 vector strings, metric justifications, and CIA impact scoring.';
   }
 
   const systemMessage: ChatMessage = {
     role: 'system',
-    content: DEFENSIVE_SYSTEM_PROMPT + modeAddendum,
+    content: MYTHOS_SYSTEM_PROMPT + modeAddendum,
   };
 
   // If requested model is known decommissioned, transparently upgrade to openai/gpt-oss-120b
@@ -80,7 +100,7 @@ export async function callGroqChat({
   const payload = {
     model: activeModel,
     messages: [systemMessage, ...messages],
-    temperature: 0.2, // Low temperature for high precision security analysis
+    temperature: 0.15, // Ultra-low temperature for precision cybersecurity analysis
     max_tokens: 4096,
     stream: true,
   };
@@ -94,37 +114,27 @@ export async function callGroqChat({
     body: JSON.stringify(payload),
   });
 
-  // If the model fails because it was decommissioned or not found, try fallback models
+  // Fallback to active alternatives if model errors
   if (!response.ok) {
     const errorBody = await response.text();
     if (
-      (response.status === 400 && errorBody.includes('decommissioned')) ||
-      (response.status === 404 && errorBody.includes('model_not_found'))
+      (response.status === 400 || response.status === 404) &&
+      (errorBody.includes('model') || errorBody.includes('decommissioned'))
     ) {
-      const fallbacks = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'].filter(
-        (m) => m !== activeModel
-      );
-
-      for (const fallbackModel of fallbacks) {
-        payload.model = fallbackModel;
-        const retryRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (retryRes.ok) {
-          return retryRes;
-        }
-      }
+      console.warn(`Model ${activeModel} failed, retrying with openai/gpt-oss-120b fallback...`);
+      payload.model = 'openai/gpt-oss-120b';
+      response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      throw new Error(`Groq API error (${response.status}): ${errorBody}`);
     }
-
-    throw new Error(`Groq API error (${response.status}): ${errorBody}`);
   }
 
   return response;
 }
-

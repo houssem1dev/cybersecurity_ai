@@ -1,7 +1,23 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { Send, Shield, Bot, User, Copy, Check, Download, Sparkles, Terminal, Code2, Network, FileText, Loader2 } from 'lucide-react';
+import {
+  Send,
+  Shield,
+  Bot,
+  User,
+  Copy,
+  Check,
+  Sparkles,
+  Terminal,
+  Code2,
+  Network,
+  Loader2,
+  Flame,
+  ShieldCheck,
+  Radar,
+  Lock,
+} from 'lucide-react';
 import { ChatMessage } from '@/lib/groq';
 import { MarkdownView } from './MarkdownView';
 
@@ -15,6 +31,7 @@ interface ChatAreaProps {
   selectedMode: string;
   onOpenCvss: () => void;
   onSelectPrompt: (prompt: string) => void;
+  onOpenApiHub?: () => void;
 }
 
 export function ChatArea({
@@ -27,6 +44,7 @@ export function ChatArea({
   selectedMode,
   onOpenCvss,
   onSelectPrompt,
+  onOpenApiHub,
 }: ChatAreaProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -55,14 +73,22 @@ export function ChatArea({
 
   const getModeLabel = (mode: string) => {
     switch (mode) {
+      case 'mythos':
+        return 'MYTHOS EXPLOIT & ZERO-DAY DISSECTION';
+      case 'autofix':
+        return 'AUTONOMOUS CODE REMEDIATION & AUTO-PATCH';
+      case 'forensics':
+        return 'FORENSIC FOOTPRINT & EVASION RADAR';
+      case 'defense':
+        return 'ZERO-TRUST & INFRASTRUCTURE SHIELD';
       case 'mode1':
-        return 'MODE 1: OWASP WEB APPLICATION SECURITY';
+        return 'OWASP WEB APPLICATION AUDIT';
       case 'mode2':
-        return 'MODE 2: DDOS & NETWORK RESILIENCE';
+        return 'DDOS & NETWORK ATTACK RESILIENCE';
       case 'mode3':
-        return 'MODE 3: CVSS RISK & VULNERABILITY SCORING';
+        return 'CVSS VULNERABILITY SCORING';
       default:
-        return 'FULL SPECTRUM DEFENSIVE ADVISORY';
+        return 'MYTHOS FULL-SPECTRUM INTELLIGENCE';
     }
   };
 
@@ -78,12 +104,14 @@ export function ChatArea({
       <div className="messages-scroll">
         {messages.length === 0 && !streamingText ? (
           <div className="welcome-screen">
-            <div className="welcome-shield">
-              <Shield size={32} />
+            <div className="welcome-shield" style={{ boxShadow: '0 0 25px rgba(0, 242, 254, 0.3)', borderColor: 'rgba(0, 242, 254, 0.4)' }}>
+              <Flame size={32} color="#00f2fe" />
             </div>
-            <h2 className="welcome-title">CYBERAI DEFENSE OPERATIONAL PLATFORM</h2>
+            <h2 className="welcome-title" style={{ letterSpacing: '1px' }}>
+              CYBERAI MYTHOS INTELLIGENCE
+            </h2>
             <p className="welcome-subtitle">
-              Elite Senior Cybersecurity Architecture, Vulnerability Assessment, and Threat Advisory powered by Groq High-Speed Inference.
+              Autonomous zero-day vulnerability analysis, exploit mechanics dissection, forensic telemetry correlation, and production-grade code remediation inspired by Project Glasswing.
             </p>
 
             <div className="feature-cards">
@@ -91,17 +119,17 @@ export function ChatArea({
                 className="feature-card"
                 onClick={() =>
                   onSelectPrompt(
-                    'Audit this API endpoint for Broken Object Level Authorization (BOLA) and OWASP API Top 10 vulnerabilities:'
+                    'Analyze this code for zero-day memory corruption, AST parsing discrepancies, and ROP/JOP exploit gadget chains:'
                   )
                 }
                 style={{ cursor: 'pointer' }}
               >
-                <div className="feature-icon">
-                  <Code2 size={20} />
+                <div className="feature-icon" style={{ color: '#00f2fe' }}>
+                  <Flame size={20} />
                 </div>
-                <div className="feature-title">Mode 1: OWASP Web Sec</div>
+                <div className="feature-title">Mythos Exploit Mechanics</div>
                 <div className="feature-desc">
-                  Audit source code for SQLi, SSRF, Broken Auth, and parameter tampering.
+                  Dissect AST flaws, gadget chains, pointer boundaries, and execution hijacking.
                 </div>
               </div>
 
@@ -109,31 +137,53 @@ export function ChatArea({
                 className="feature-card"
                 onClick={() =>
                   onSelectPrompt(
-                    'Analyze this high-volume SYN flood and HTTP request telemetry to configure NGINX rate-limiting and Cloudflare scrubbing:'
+                    'Audit this authentication and database controller. Pinpoint all vulnerabilities and provide a 100% complete, hardened, drop-in replacement code without placeholders:'
                   )
                 }
                 style={{ cursor: 'pointer' }}
               >
-                <div className="feature-icon">
-                  <Network size={20} />
+                <div className="feature-icon" style={{ color: '#10b981' }}>
+                  <ShieldCheck size={20} />
                 </div>
-                <div className="feature-title">Mode 2: DDoS & Network</div>
+                <div className="feature-title">Auto-Patch &amp; Remediation</div>
                 <div className="feature-desc">
-                  Volumetric floods, Slowloris, Anycast CDN posture, and Layer 7 traffic shaping.
+                  Synthesize production-grade hardened code that completely eliminates vulnerabilities.
                 </div>
               </div>
 
               <div
                 className="feature-card"
-                onClick={onOpenCvss}
+                onClick={() =>
+                  onSelectPrompt(
+                    'Detail the forensic telemetry footprint (Sysmon Event IDs, Linux auditd, memory page allocations) for this attack and explain how detection engines catch it:'
+                  )
+                }
                 style={{ cursor: 'pointer' }}
               >
-                <div className="feature-icon">
-                  <Sparkles size={20} />
+                <div className="feature-icon" style={{ color: '#a855f7' }}>
+                  <Radar size={20} />
                 </div>
-                <div className="feature-title">Mode 3: CVSS Matrix</div>
+                <div className="feature-title">Forensic Footprint &amp; Radar</div>
                 <div className="feature-desc">
-                  Interactive CVSS v3.1 calculator, CIA impact scoring, and MITRE TTPs.
+                  Evaluate kernel events, ETW telemetry, memory dumps, and EDR unhooking detection.
+                </div>
+              </div>
+
+              <div
+                className="feature-card"
+                onClick={() =>
+                  onSelectPrompt(
+                    'Evaluate our API Gateway and reverse-proxy architecture against Layer 7 DDoS, Slowloris connection exhaustion, and SSRF pivoting:'
+                  )
+                }
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="feature-icon" style={{ color: '#38bdf8' }}>
+                  <Lock size={20} />
+                </div>
+                <div className="feature-title">Zero-Trust &amp; DDoS Shield</div>
+                <div className="feature-desc">
+                  Rate-limiting thresholds, scrubbing posture, and infrastructure defense-in-depth.
                 </div>
               </div>
             </div>
@@ -143,8 +193,8 @@ export function ChatArea({
             {messages.map((msg, index) => (
               <div key={index} className={`message-bubble ${msg.role}`}>
                 {msg.role === 'assistant' && (
-                  <div className="avatar-wrapper avatar-ai">
-                    <Bot size={18} />
+                  <div className="avatar-wrapper avatar-ai" style={{ border: '1px solid rgba(0, 242, 254, 0.4)' }}>
+                    <Bot size={18} color="#00f2fe" />
                   </div>
                 )}
 
@@ -183,8 +233,8 @@ export function ChatArea({
 
             {isStreaming && (
               <div className="message-bubble assistant">
-                <div className="avatar-wrapper avatar-ai">
-                  <Bot size={18} />
+                <div className="avatar-wrapper avatar-ai" style={{ border: '1px solid rgba(0, 242, 254, 0.4)' }}>
+                  <Bot size={18} color="#00f2fe" />
                 </div>
                 <div className="message-content">
                   {streamingText ? (
@@ -195,7 +245,7 @@ export function ChatArea({
                   ) : (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)' }}>
                       <Loader2 size={16} className="animate-spin" />
-                      <span>Synthesizing security posture & threat metrics...</span>
+                      <span>Deconstructing AST, tracing exploit mechanics &amp; synthesizing patch...</span>
                     </div>
                   )}
                 </div>
@@ -206,69 +256,59 @@ export function ChatArea({
         )}
       </div>
 
-      {/* Input area */}
-      <div className="chat-input-wrapper">
-        <div className="chat-input-box">
-          <div className="input-top-bar">
-            <span className="mode-indicator-pill">{getModeLabel(selectedMode)}</span>
-            <span>Shift + Enter for new line • Enter to submit</span>
+      {/* Input Tray HUD */}
+      <div className="chat-input-area">
+        <div className="input-hud-bar">
+          <div className="active-directive-label">
+            <span className="hud-indicator" />
+            <span>DIRECTIVE: {getModeLabel(selectedMode)}</span>
           </div>
+          <div className="quick-snippets">
+            <button
+              className="snippet-pill"
+              onClick={() => insertSnippet('Analyze AST root cause & gadget chains in this snippet:\n```\n\n```')}
+            >
+              + Exploit Chain
+            </button>
+            <button
+              className="snippet-pill"
+              onClick={() => insertSnippet('Synthesize 100% production-ready drop-in code patch for:\n```\n\n```')}
+            >
+              + Auto-Patch
+            </button>
+            <button
+              className="snippet-pill"
+              onClick={() => insertSnippet('What Sysmon Event IDs and memory artifacts detect this attack?')}
+            >
+              + Forensics
+            </button>
+          </div>
+        </div>
 
+        <div className="input-box-wrapper">
           <textarea
             ref={textareaRef}
-            className="textarea-field"
-            placeholder="Paste source code, network architecture, NGINX/firewall configs, or traffic telemetry to analyze..."
+            className="chat-textarea"
+            placeholder="Paste code snippet, network trace, or exploit query (Shift + Enter for new line)..."
             value={inputText}
             onChange={(e) => onInputChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            rows={2}
+            rows={3}
+            disabled={isStreaming}
           />
 
-          <div className="input-actions-bar">
-            <div className="snippet-buttons">
-              <button
-                type="button"
-                className="snippet-chip"
-                onClick={() => insertSnippet('```javascript\n// Paste code here\n```')}
-              >
-                + Code
-              </button>
-              <button
-                type="button"
-                className="snippet-chip"
-                onClick={() => insertSnippet('```nginx\n# Paste NGINX/WAF configuration\n```')}
-              >
-                + NGINX / WAF
-              </button>
-              <button
-                type="button"
-                className="snippet-chip"
-                onClick={() => insertSnippet('Telemetry Log:\n- Requests/sec: \n- Source IP Distribution: \n- Target URI: ')}
-              >
-                + Telemetry
-              </button>
-              <button
-                type="button"
-                className="snippet-chip"
-                onClick={onOpenCvss}
-              >
-                + CVSS 3.1
-              </button>
-            </div>
-
-            <button
-              className="btn btn-primary"
-              onClick={onSendMessage}
-              disabled={isStreaming || !inputText.trim()}
-              style={{
-                opacity: isStreaming || !inputText.trim() ? 0.5 : 1,
-                cursor: isStreaming || !inputText.trim() ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {isStreaming ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
-              <span>Analyze</span>
-            </button>
-          </div>
+          <button
+            className={`send-button ${inputText.trim() && !isStreaming ? 'active' : ''}`}
+            onClick={onSendMessage}
+            disabled={!inputText.trim() || isStreaming}
+            title="Execute Mythos Security Analysis"
+          >
+            {isStreaming ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <Send size={16} />
+            )}
+          </button>
         </div>
       </div>
     </div>
